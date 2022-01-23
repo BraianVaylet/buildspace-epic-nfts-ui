@@ -1,24 +1,20 @@
-# 🦄 Wave Portal [UI]
+<p align="center" width="200">
+   <img align="center" width="100" src="https://raw.githubusercontent.com/BraianVaylet/buildspace-epic-nfts-ui/main/public/dragon2.png" />   
+</p>
 
-Proyecto web basado en la web3 desarrollado con **[Next.js](https://nextjs.org/)** y **[ChakraUI](https://chakra-ui.com/)**. En esta aplicación los usuarios podrán dejar un mensaje que será almacenado dentro de la blockchain, para esto es necesario primero autenticarse usando la wallet **[Metamask](https://metamask.io/)** y configurandola para usar la red de prueba de **[Rinkeby](https://www.rinkeby.io/#stats)**.
+# 🐲 Epic NFTs [UI]
 
-Los usuarios podrán dejar por medio de un modal un mensaje que se almacenará en la cadena de bloques, para esto es necesario pagar la transacción usando ETH. Dado a que nos encontramos en la red de Rinkeby no estaremos usando ETH real, sino unos de prueba. Para cargarle saldo a tu wallet y asi tener ETH para usar en la red de Rinkeby pueden usar el siguiente **[enlace](https://faucets.chain.link/rinkeby)**
+El proyecto se encuentra deployado en Vercel para que puedan verlo e interactuar con él, toda crítica o comentario se agradece, pueden acceder a la demo en el siguiente link:
 
-Cuando un usuario deja un mensaje tiene un ***50% de probabilidad de ganar una recompensa en ETH*** que será automáticamente depositada en su wallet. La plataforma le avisará si ha ganado la recompensa.
+### **[VER DEMO](https://epic-nfts-ui-ten.vercel.app/)**
 
-Este fue un proyecto con fin 100% académico mientras realizaba los cursos de la plataforma **[buildspace](https://buildspace.so/)**, la cual recomiendo a todo desarrollador que quiera comenzar a desarrollar para la web3.
+Este proyecto consume un smart-contract desarrollado en Solidity utilizando el framework HardHat, pueden encontrar el repositorio en el siguiente link:
 
-Pueden probar la aplicación ingresando al siguiente link: **[Wave Portal 🦄](https://buildspace-wave-portal-ui.vercel.app/)**
+### [REPO SMART-CONTRACT](https://github.com/BraianVaylet/buildspace-epic-nfts)
 
-La aplicación está conectándose a un smart-contract desarrollado con la tecnología **[Solidity](https://solidity-es.readthedocs.io/es/latest/#)**, pueden revisar su repo [aquí](https://github.com/BraianVaylet/buildspace-wave-portal) y el contrato desplegado en la **rinkeby.etherscan** [aquí](https://rinkeby.etherscan.io/address/0xef10AE1B845aEC9251c19cc5af7d4dda7424F52D)
+## Sobre el proyecto:
 
-## Algunas capturas del proyecto:
-
-![screenshot#1](https://raw.githubusercontent.com/BraianVaylet/buildspace-wave-portal-ui/main/screenshot/1.png)
-
-![screenshot#2](https://raw.githubusercontent.com/BraianVaylet/buildspace-wave-portal-ui/main/screenshot/2.png)
-
-![screenshot#3](https://raw.githubusercontent.com/BraianVaylet/buildspace-wave-portal-ui/main/screenshot/3.png)
+El proyecto permitirá a los usuarios conectar su billetera Ethereum y acuñar un NFT en su billetera para que realmente la posean. Incluso podrán revender el NFT en OpenSea. El NFT en sí se puede personalizar.
 
 ---
 
