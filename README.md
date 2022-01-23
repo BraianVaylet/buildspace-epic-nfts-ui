@@ -14,6 +14,8 @@ Este proyecto consume un smart-contract desarrollado en Solidity utilizando el f
 
 ## Sobre el proyecto:
 
+El proyecto permitirá a los usuarios conectar su billetera Ethereum y acuñar un NFT en su billetera para que realmente la posean. Incluso podrán revender el NFT en OpenSea. El NFT en sí se puede personalizar.
+
 ---
 
 ### This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
