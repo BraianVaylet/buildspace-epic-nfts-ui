@@ -1,5 +1,5 @@
 <p align="center" width="200">
-   <img align="center" width="100" src="https://raw.githubusercontent.com/BraianVaylet/buildspace-wave-portal-ui/main/public/dragon2.png" />   
+   <img align="center" width="100" src="https://raw.githubusercontent.com/BraianVaylet/buildspace-epic-nfts-ui/main/public/dragon2.png" />   
 </p>
 
 # 🐲 Epic NFTs [UI]
