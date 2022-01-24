@@ -14,7 +14,18 @@ Este proyecto consume un smart-contract desarrollado en Solidity utilizando el f
 
 ## Sobre el proyecto:
 
-El proyecto permitirá a los usuarios conectar su billetera Ethereum y acuñar un NFT en su billetera para que realmente la posean. Incluso podrán revender el NFT en OpenSea. El NFT en sí se puede personalizar.
+Proyecto web basado en la web3 desarrollado con **[Next.js](https://nextjs.org/)** y **[ChakraUI](https://chakra-ui.com/)**. En esta aplicación los usuarios podrán dejar un mensaje que será almacenado dentro de la blockchain, para esto es necesario primero autenticarse usando la wallet **[Metamask](https://metamask.io/)** y configurandola para usar la red de prueba de **[Rinkeby](https://www.rinkeby.io/#stats)**.
+
+Los usuarios podrán dejar por medio de un modal un mensaje que se almacenará en la cadena de bloques, para esto es necesario pagar la transacción usando ETH. Dado a que nos encontramos en la red de Rinkeby no estaremos usando ETH real, sino unos de prueba. Para cargarle saldo a tu wallet y así tener ETH para usar en la red de Rinkeby pueden usar el siguiente **[enlace](https://faucets.chain.link/rinkeby)**
+
+Cuando un usuario deja un mensaje tiene un ***50% de probabilidad de ganar una recompensa en ETH*** que será automáticamente depositada en su wallet. La plataforma le avisará si ha ganado la recompensa.
+
+Este fue un proyecto con fin 100% académico mientras realizaba los cursos de la plataforma **[buildspace](https://buildspace.so/)**, la cual recomiendo a todo desarrollador que quiera comenzar a desarrollar para la web3.
+
+Pueden probar la aplicación ingresando al siguiente link: **[Wave Portal 🦄](https://buildspace-wave-portal-ui.vercel.app/)**
+
+La aplicación está conectándose a un smart-contract desarrollado con la tecnología **[Solidity](https://solidity-es.readthedocs.io/es/latest/#)**, pueden revisar su repo [aquí](https://github.com/BraianVaylet/buildspace-wave-portal)
+
 
 ---
 
