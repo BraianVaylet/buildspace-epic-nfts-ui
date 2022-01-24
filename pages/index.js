@@ -7,7 +7,7 @@ import myEpicNft from '../utils/MyEpicNFT.json'
 import Layout from '../components/Layout'
 
 // > Nuestra direccion del contrato que desplegamos.
-const CONTRACT_ADDRESS = '0xA0815dF9174405F40b5a262A5f1085439F5298Aa'
+const CONTRACT_ADDRESS = '0x9a59CFc34ABED8FDE5989892A1D2B75235d14b14'
 // > Nuestro abi del contrato
 const contractABI = myEpicNft.abi
 
