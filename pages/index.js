@@ -2,21 +2,20 @@
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import { ethers } from 'ethers'
-import { Button, Flex, Text, useColorMode, IconButton, Icon, Link, Image, Tooltip, Spinner, useToast } from '@chakra-ui/react'
-import { MoonIcon, SunIcon } from '@chakra-ui/icons'
-import { FaLinkedin, FaGithub, FaEthereum } from 'react-icons/fa'
+import { Button, Flex, Text, Spinner, useToast, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useDisclosure, Link, Accordion, AccordionItem, AccordionButton, AccordionIcon, Box, AccordionPanel } from '@chakra-ui/react'
 import myEpicNft from '../utils/MyEpicNFT.json'
-import LOGO from '../public/dragon2.png'
+import Layout from '../components/Layout'
 
 // > Nuestra direccion del contrato que desplegamos.
-const CONTRACT_ADDRESS = '0x858a2c0D6Ae323efE9Fa06727EF57192Aff72f15'
+const CONTRACT_ADDRESS = '0xA0815dF9174405F40b5a262A5f1085439F5298Aa'
 // > Nuestro abi del contrato
 const contractABI = myEpicNft.abi
 
 export default function Home () {
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast()
-  const { colorMode, toggleColorMode } = useColorMode()
   const [loader, setLoader] = useState(false)
+  const [newTokenId, setNewTokenId] = useState(null)
   const [totalSupply, setTotalSupply] = useState(0) // Almacenamos el total de NFTs que se podra mintear.
   const [currentSupply, setCurrentSupply] = useState(0) // Almacenamos total actual de NFTs minteados
   const [currentAccount, setCurrentAccount] = useState('') // Almacenamos la billetera pública de nuestro usuario.
@@ -109,14 +108,46 @@ export default function Home () {
 
         // > Capturo el evento
         connectedContract.on('NewEpicNFTMinted', (from, tokenId) => {
+          setNewTokenId(tokenId.toNumber())
+          onOpen()
+          getCurrentTotalEpicNFTs()
           console.log(from, tokenId.toNumber())
-          alert(`Hey there! We've minted your NFT and sent it to your wallet. It may be blank right now. It can take a max of 10 min to show up on OpenSea. Here's the link: https://testnets.opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId.toNumber()}`)
-        })
-        connectedContract.on('getTotalNFTsMintedSoFar', (maxSupply, currentSupply) => {
-          setTotalSupply(maxSupply.toNumber())
-          setCurrentSupply(currentSupply.toNumber())
         })
         console.log('Setup event listener!')
+      } else {
+        console.log("Ethereum object doesn't exist!")
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const getTotalEpicNFTs = async () => {
+    try {
+      const { ethereum } = window
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum)
+        const signer = provider.getSigner()
+        const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, signer)
+        const total = await connectedContract.getTotalNFTs()
+        setTotalSupply(total.toNumber())
+      } else {
+        console.log("Ethereum object doesn't exist!")
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const getCurrentTotalEpicNFTs = async () => {
+    try {
+      const { ethereum } = window
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum)
+        const signer = provider.getSigner()
+        const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, signer)
+        const total = await connectedContract.getCurrentTotalNFTs()
+        setCurrentSupply(total.toNumber())
       } else {
         console.log("Ethereum object doesn't exist!")
       }
@@ -144,7 +175,7 @@ export default function Home () {
         console.log('Mining...please wait.')
         await nftTxn.wait()
         setLoader(false)
-        console.log(`Mined, see transaction: https://rinkeby.etherscan.io/tx/${nftTxn.hash}`)
+        // console.log(`Mined, see transaction: https://rinkeby.etherscan.io/tx/${nftTxn.hash}`)
       } else {
         console.log("Ethereum object doesn't exist!")
       }
@@ -155,197 +186,216 @@ export default function Home () {
 
   useEffect(() => {
     checkIfWalletIsConnected()
+    getTotalEpicNFTs()
+    getCurrentTotalEpicNFTs()
   }, [])
 
   return (
-    <Flex
-      align={'center'}
-      justify={'space-around'}
-      direction={'column'}
-      w={'100%'}
-      minH={'100vh'}
-      py={100}
+    <Layout
+      contract={CONTRACT_ADDRESS}
+      chain={chainIdOk}
+      address={currentAccount}
+      head={
+        <Head>
+          <title>buildsapce-epic-nfts</title>
+          <meta name="description" content="buildspace-epic-nfts with Next.js" />
+          <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"></link>
+        </Head>
+      }
     >
-      <Head>
-        <title>buildsapce-epic-nfts</title>
-        <meta name="description" content="buildspace-epic-nfts with Next.js" />
-        <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"></link>
-      </Head>
-
-      <Flex
-        width={'100%'}
-        padding={5}
-        flexDirection={'row'}
-        justifyContent={'flex-end'}
-        align={'center'}
-      >
-        {chainIdOk
-          ? <Text color={'green.600'}>Conectado</Text>
-          : <Text color={'red.600'}>Red incorrecta</Text>
-        }
-      </Flex>
-
       <Flex
         align={'center'}
-        justify={'center'}
+        justify={'flex-start'}
         direction={'column'}
-        w={'50%'}
+        w={'100%'}
+        py={100}
       >
-        <Text
-          id='top'
-          as='h1'
-          fontSize={'3xl'}
-          fontWeight={900}
-          letterSpacing={'1px'}
-        >
-          {"Hi 👋, I'm Braian and"}
-        </Text>
-        <Text
-          as='h3'
-          my={10}
-          fontSize={'5xl'}
-          fontWeight={600}
-          letterSpacing={'.5px'}
-        >
-          Welcome to Epic NFTs 🐲
-        </Text>
 
-        <Button
-          mt={5}
-          p={4}
-          w={'30%'}
-          fontWeight={'bold'}
-          letterSpacing={1}
-          borderRadius={'md'}
-          bgGradient={'linear(to-r, green.300, green.500)'}
-          color={'white'}
-          boxShadow={'2xl'}
-          _hover={{
-            opacity: currentAccount ? '.9' : '.2',
-            cursor: currentAccount ? 'pointer' : 'not-allowed'
-          }}
-          disabled={!currentAccount || loader || !chainIdOk}
-          onClick={askContractToMintNft}
+        <Flex
+          align={'center'}
+          justify={'center'}
+          direction={'column'}
+          w={'50%'}
         >
-          Mint a NFT
-        </Button>
-
-        {/* Conectar billetera */}
-        {!currentAccount && (
-          <Button
-            mt={10}
-            w={'30%'}
-            letterSpacing={1}
-            borderRadius={'md'}
-            bg={'gray.600'}
-            color={'white'}
-            boxShadow={'2xl'}
-            _hover={{
-              opacity: '.9',
-              cursor: 'pointer'
-            }}
-            onClick={connectWallet}
-            disabled={currentAccount}
+          <Text
+            id='top'
+            as='h1'
+            fontSize={'3xl'}
+            fontWeight={900}
+            letterSpacing={'1px'}
           >
-            {'Connect your Wallet'}
-          </Button>
-        )}
-      </Flex>
+            {"Hi 👋, I'm Braian and"}
+          </Text>
+          <Text
+            as='h3'
+            my={5}
+            fontSize={'5xl'}
+            fontWeight={600}
+            letterSpacing={'.5px'}
+          >
+            Welcome to Epic NFTs 🐲
+          </Text>
 
-      {loader &&
-          (
+          <Accordion w={'100%'} defaultIndex={[0]} allowMultiple>
+            <AccordionItem>
+              <h2>
+                <AccordionButton>
+                  <Box flex='1' textAlign='left'>
+                    <Text
+                      as={'h2'}
+                      fontSize={30}
+                      fontWeight={'bold'}>
+                        About the project
+                    </Text>
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4}>
+                <Text fontSize={20}>This project allows you to connect your Metamask wallet and mint an NFT in it. This NFT will be yours alone, you can even resell the NFT on OpenSea or Rarible.</Text>
+                <Text fontSize={20}>NFTs are composed of a word that is randomly generated between an animal, a profession and an adjective.</Text>
+                <Text fontSize={20}>It is necessary to be connected to the Rinkeby testnet to interact with the platform.</Text>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
+
           <Flex
             direction={'column'}
             align={'center'}
             justify={'center'}
             w={'100%'}
+            py={25}
           >
-            <Spinner
-              thickness='6px'
-              speed='0.45s'
-              emptyColor='green.100'
-              color='green.500'
-              size='xl'
-            />
             <Text
-              mt={2.5}
-            >{'Mining'}</Text>
+              fontSize={'2xl'}
+              fontStyle={'italic'}
+              bgGradient={'linear(to-r, green.300, green.500)'}
+              bgClip='text'
+            >
+              {currentSupply} of {totalSupply} NFTs minted
+            </Text>
           </Flex>
-          )
-      }
 
-      {/* Footer con links */}
-      <Flex
-        direction={'row'}
-        justify={'center'}
-        align={'center'}
-        w={'50%'}
-        mt={100}
-      >
-        <Tooltip hasArrow label={'linkedin'} bg={'gray.900'} color={'white'}>
-          <IconButton
-            mx={5}
+          <Button
+            mt={5}
+            p={4}
+            w={'30%'}
+            fontWeight={'bold'}
+            letterSpacing={1}
+            borderRadius={'md'}
+            bgGradient={'linear(to-r, green.300, green.500)'}
+            color={'white'}
+            boxShadow={'2xl'}
             _hover={{
-              cursor: 'pointer',
-              color: 'green.100'
+              opacity: currentAccount ? '.9' : '.2',
+              cursor: currentAccount ? 'pointer' : 'not-allowed'
             }}
+            disabled={!currentAccount || loader || !chainIdOk}
+            onClick={askContractToMintNft}
+          >
+            Mint a NFT
+          </Button>
+
+          <Button
+            mt={5}
+            p={4}
+            w={'30%'}
+            fontWeight={'bold'}
+            letterSpacing={1}
+            borderRadius={'md'}
+            bgGradient={'linear(to-r, yellow.300, yellow.500)'}
+            color={'white'}
+            boxShadow={'2xl'}
+            _hover={{
+              opacity: currentAccount ? '.9' : '.2',
+              cursor: currentAccount ? 'pointer' : 'not-allowed'
+            }}
+            disabled={!currentAccount || loader || !chainIdOk}
             as={Link}
-            href={'https://www.linkedin.com/in/braianvaylet/'}
-            icon={<Icon as={FaLinkedin} w={7} h={7} />}
-          />
-        </Tooltip>
-        <Tooltip hasArrow label={'github'} bg={'gray.900'} color={'white'}>
-          <IconButton
-            mx={5}
-            _hover={{
-              cursor: 'pointer',
-              color: 'green.100'
-            }}
-            as={Link}
-            href={'https://github.com/BraianVaylet'}
-            icon={<Icon as={FaGithub} w={7} h={7} />}
-          />
-        </Tooltip>
-        <Tooltip hasArrow label={'Volver al inicio'} bg={'gray.900'} color={'white'}>
-          <IconButton
-            mx={5}
-            _hover={{
-              cursor: 'pointer',
-              color: 'green.100'
-            }}
-            as={Link}
-            href={'#top'}
-            icon={<Image src={LOGO.src} alt='logo wave-portal' w={7} h={7} />}
-          />
-        </Tooltip>
-        <Tooltip hasArrow label={'Cambiar theme'} bg={'gray.900'} color={'white'}>
-          <IconButton
-            mx={5}
-            _hover={{
-              cursor: 'pointer',
-              color: 'green.100'
-            }}
-            onClick={toggleColorMode}
-            icon={
-              colorMode === 'light'
-                ? <MoonIcon w={5} h={5} />
-                : <SunIcon w={5} h={5} />
-            }
-          />
-        </Tooltip>
-        <Tooltip hasArrow label={'Contrato'} bg={'gray.900'} color={'white'}>
-          <IconButton
-            mx={5}
-            _hover={{
-              cursor: 'pointer',
-              color: 'green.100'
-            }}
-            as={Link}
-            href={`https://rinkeby.etherscan.io/address/${CONTRACT_ADDRESS}`}
-            icon={<Icon as={FaEthereum} w={7} h={7} />}
-          />
-        </Tooltip>
+            href={`https://rinkeby.rarible.com/user/${currentAccount}/owned`}
+            isExternal
+          >
+            Ver colección en Rarible
+          </Button>
+
+          {/* Conectar billetera */}
+          {!currentAccount && (
+            <Button
+              mt={10}
+              w={'30%'}
+              letterSpacing={1}
+              borderRadius={'md'}
+              bg={'gray.600'}
+              color={'white'}
+              boxShadow={'2xl'}
+              _hover={{
+                opacity: '.9',
+                cursor: 'pointer'
+              }}
+              onClick={connectWallet}
+              disabled={currentAccount}
+            >
+              {'Connect your Wallet'}
+            </Button>
+          )}
+        </Flex>
+
+        {loader &&
+            (
+            <Flex
+              direction={'column'}
+              align={'center'}
+              justify={'center'}
+              w={'100%'}
+              mt={10}
+            >
+              <Spinner
+                thickness='6px'
+                speed='0.45s'
+                emptyColor='green.100'
+                color='green.500'
+                size='xl'
+              />
+              <Text
+                mt={2.5}
+              >{'Mining'}</Text>
+            </Flex>
+            )
+        }
       </Flex>
-    </Flex>
+
+      {/* modal */}
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>🐲 Hey you!</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <Text>Hello! We mint your NFT and send it to your wallet. It may be blank at this time. It may take a maximum of 10 minutes to appear on OpenSea and Rarible.</Text>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button
+              as={Link}
+              href={`https://rinkeby.rarible.com/token/${CONTRACT_ADDRESS}:${newTokenId}`}
+              isExternal
+              borderRadius={'md'}
+              bgGradient={'linear(to-r, yellow.300, yellow.500)'}
+              color={'white'}
+              mr={3}
+            >
+              Show in Rarible
+            </Button>
+            <Button onClick={() => {
+              onClose()
+              setNewTokenId(null)
+            }}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </Layout>
   )
 }
