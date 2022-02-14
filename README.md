@@ -26,6 +26,14 @@ Pueden probar la aplicación ingresando al siguiente link: **[Epic NFTs](https:/
 
 La aplicación está conectándose a un smart-contract desarrollado con la tecnología **[Solidity](https://solidity-es.readthedocs.io/es/latest/#)**, pueden revisar su repo [aquí](https://github.com/BraianVaylet/buildspace-wave-portal)
 
+## Algunas capturas del proyecto:
+
+![screenshot#1](https://raw.githubusercontent.com/BraianVaylet/buildspace-epic-nfts-ui/main/public/screen1.png)
+
+![screenshot#2](https://raw.githubusercontent.com/BraianVaylet/buildspace-epic-nfts-ui/main/public/screen2.png)
+
+![screenshot#3](https://raw.githubusercontent.com/BraianVaylet/buildspace-epic-nfts-ui/main/public/screen3.png)
+
 ---
 
 ### This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
