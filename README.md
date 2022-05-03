@@ -22,6 +22,8 @@ Cuando un usuario acuña un NFT obtendrá una palabra generada de forma aleatori
 
 Este fue un proyecto con fin 100% académico mientras realizaba los cursos de la plataforma **[buildspace](https://buildspace.so/)**, la cual recomiendo a todo desarrollador que quiera comenzar a desarrollar para la web3.
 
+### [[NFT] CURSO COMPLETO](https://opensea.io/assets/matic/0x3CD266509D127d0Eac42f4474F57D0526804b44e/11713?force_update=true)
+
 Pueden probar la aplicación ingresando al siguiente link: **[Epic NFTs](https://epic-nfts-ui-ten.vercel.app/)**
 
 La aplicación está conectándose a un smart-contract desarrollado con la tecnología **[Solidity](https://solidity-es.readthedocs.io/es/latest/#)**, pueden revisar su repo [aquí](https://github.com/BraianVaylet/buildspace-wave-portal)
